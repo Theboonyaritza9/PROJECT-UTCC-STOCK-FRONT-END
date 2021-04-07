@@ -4,7 +4,10 @@ import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
 import { projectItem } from "../../ApiHistory";
 import { useDispatch, useSelector } from "react-redux";
 import { toolListAction } from "../../actions/toolActions";
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
+import { useFilter } from "../../shared/util/SelectFilterProject";
+import CheckProject from "../../shared/util/CheckProject";
+import { useOnSubmitProject } from "../../shared/util/SubmitProject";
 
 // Component
 import Input from "../../shared/components/FormElements/Input";
@@ -74,6 +77,23 @@ function EditProject() {
         false
     );
 
+    const [useTypeFilter, useCategoryFilter, useNameFilter, useOnSubmitToolSelected, useDeleteToolSelected] = useFilter(
+        tools, toolBackup,typeFilter, categoryFilter, nameFilter,
+        setTools, setToolBackup, setTypeFilter, setCategoryFilter, setNameFilter,
+        setTypeSelect, setCategorySelect, setNameSelect,
+        totalSelect, toolSelected, validTotal,
+        setTotalSelect, setToolSelected, setValidName, setValidBtn, setValidTotal, setOpenAlert
+    );
+
+    const [useOnSubmitCheck] = CheckProject(
+        formState, toolSelected, toolCal,
+        setOpenAlert, setValidTool
+    )
+
+    const [onSubmit] = useOnSubmitProject(
+        formState, projectCode, type, file, description, toolSelected, files, validTool
+    );
+
     useEffect(() => {
         // ดึงข้อมูลอุปกรณ์สำหรับเพิ่มลงในรายการบอร์ด
         dispatch(toolListAction());
@@ -95,99 +115,6 @@ function EditProject() {
         }
     }, [toolList.tools])
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-
-        let newTool = {
-            projectName: formState.inputs.name.value,
-            projectCode: projectCode,
-            total: formState.inputs.name.value,
-            type: type,
-            profileImage: file,
-            description: description,
-            tools: toolSelected,
-            images: files
-        }
-
-        console.log(newTool);
-    }
-
-
-    const onChangeTypeFilter = (e) => {
-        let filterData = tools.filter((item) => item.type.toLowerCase() === e.target.value)
-        setTypeFilter(filterData);
-        setCategoryFilter(filterData);
-        setTypeSelect(e.target.value);
-        setNameFilter(filterData)
-    }
-
-    const onChangeCategoryFilter = (e) => {
-        setCategorySelect(e.target.value);
-        let filterData = typeFilter.filter((item) => item.category.toLowerCase() === e.target.value)
-        setNameFilter(filterData);
-
-    }
-
-    const onChangeNameFilter = (e) => {
-        setNameSelect(e.target.value);
-        let filterData = categoryFilter.filter((item) => item.toolName.toLowerCase() === e.target.value);
-        setNameFilter(filterData);
-        setValidName(true)
-        setValidBtn(true && validTotal)
-    }
-
-    const onSubmitToolSelected = () => {
-        let { id, toolName, type, category, size, imageProfile } = nameFilter[0];
-        // เก็บข้อมูลอุปกรณ์ที่เลือก ไปยังตัวแปรใหม่ เพื่อ 
-        // 1. ป้องกันผู้ใช้เลือกอุปกรณ์ที่เหมือนกัน เช่น R100K 10 ตัว, R100K 5 ตัว จริงๆแล้วผู้ใช้ควรเลือก R100K 15 ตัว
-        // 2. ลบข้อมูลในตัวแปร tools เพื่อป้องกันค่าอุปกรณ์ที่เลือกแล้วมาแสดงใน select tag ซ้ำ แล้วนำค่าที่ลบมาเก็บไว้ในตัวแปร กรณี ผู้ใช้ลบข้อมูลอุปกรณ์ที่เลือกในตัวแปร
-        // toolSelected ก็จะนำค่าที่ลบ นำกลับคืนสู่ตัวแปร tools 
-        let backupData = [...toolBackup, nameFilter[0]]
-        let newtool = tools.filter((tool) => tool.id !== nameFilter[0].id)
-        // ลบอุปกรณ์ที่ถูกเลือกไปยังบอร์ด
-        setTools(newtool)
-        // backup อุปกรณ์ที่ถูกลบ
-        setToolBackup(backupData)
-
-
-        let createNewTool = {
-            id,
-            toolName,
-            type,
-            category,
-            size,
-            imageProfile,
-            total: totalSelect
-        }
-
-        setTotalSelect("")
-        setNameSelect("")
-        setCategorySelect("")
-        setTypeSelect("")
-        setToolSelected([...toolSelected, createNewTool])
-        setCategoryFilter([])
-        setValidBtn(false)
-        setValidTotal(false)
-        setValidName(false)
-    }
-
-    // console.log(toolBackup)
-
-    const deleteToolSelected = (id) => {
-        // let findData = toolBackup.filter((item) => item.id === id);
-        let findData = toolBackup.find((item) => item.id === id);
-        setToolSelected(toolSelected.filter((item) => item.id !== id));
-        setToolBackup(toolBackup.filter(item => item.id !== id))
-        // set ข้อมูลที่ถูกลบกลับไปยังตัวแปรเดิม
-        setTools([...tools, findData])
-        setTotalSelect("")
-        setNameSelect("")
-        setCategorySelect("")
-        setTypeSelect("")
-        // ให้การแจ้งเตือน ข้อผิดพลาด หายไป
-        setOpenAlert(false)
-    }
-
     const handleAlert = () => {
         setOpenAlert(false)
     }
@@ -201,44 +128,6 @@ function EditProject() {
             setValidBtn(validName && true)
         }
         setTotalSelect(e.target.value)
-    }
-
-    const onSubmitCheck = async () => {
-        let projectTotal = formState.inputs.total.value;
-        // console.log(toolSelected)
-
-        // คำนวนอุปกรณ์ที่ต้องใช้
-        let requiredTool = []
-        await toolSelected.map((tool) => {
-            let sum = Number(tool.total) * projectTotal;
-            let newArr = { id: tool.id, toolName: tool.toolName, total: sum }
-            requiredTool = [...requiredTool, newArr]
-        })
-
-        // คำนวนอุปกรณ์ที่ต้องเหลือ
-        let newTotalTool = []
-        await requiredTool.map((tool) => {
-            let findTool = toolCal.find((item) => item.id === tool.id)
-            let sum = Number(findTool.total) - Number(tool.total)
-            let newArr = { id: tool.id, toolName: tool.toolName, total: sum }
-            newTotalTool = [...newTotalTool, newArr]
-        })
-
-        // เก็บค่าอุปกรณ์ที่ขาดโชวหน้าจอ
-        let inSufficientTool = []
-        newTotalTool.map((item) => {
-            if (item.total < 0) {
-                inSufficientTool = [...inSufficientTool, item]
-            }
-        })
-
-        if (inSufficientTool.length > 0) {
-            setOpenAlert(true)
-            setValidTool(inSufficientTool)
-
-        } else {
-            setValidTool(false)
-        }
     }
 
     return (
@@ -294,11 +183,11 @@ function EditProject() {
                     <h3>อุปกรณ์</h3>
                     <div className="editproject-toolSelected">
                         <div className="editproject-select-group">
-                            <SelectComponent list={tools} typeFilter="tool" filterName="ชนิด" dataType="type" onChange={onChangeTypeFilter} value={typeSelect} />
-                            <SelectComponent list={typeFilter} typeFilter="tool" filterName="ประเภท" dataType="category" onChange={onChangeCategoryFilter} value={categorySelect} />
+                            <SelectComponent list={tools} typeFilter="tool" filterName="ชนิด" dataType="type" onChange={useTypeFilter} value={typeSelect} />
+                            <SelectComponent list={typeFilter} typeFilter="tool" filterName="ประเภท" dataType="category" onChange={useCategoryFilter} value={categorySelect} />
                         </div>
                         <div className="">
-                            <SelectComponent list={categoryFilter} typeFilter="tool" filterName="ชื่ออุปกรณ์" dataType="name" onChange={onChangeNameFilter} value={nameSelect} />
+                            <SelectComponent list={categoryFilter} typeFilter="tool" filterName="ชื่ออุปกรณ์" dataType="name" onChange={useNameFilter} value={nameSelect} />
                         </div>
                         <TextField
                             label="จำนวน"
@@ -310,14 +199,14 @@ function EditProject() {
                             onChange={totalInput}
                         />
                         <Button variant="contained" size="small" color="primary" className="editproject-btn-add"
-                            onClick={onSubmitToolSelected}
+                            onClick={useOnSubmitToolSelected}
                             disabled={!validBtn}
                         >
                             เพิ่ม
                         </Button>
                         <Divider />
                         <h4>อุปกรณ์ที่ใช้ในบอร์ด</h4>
-                        <ListToolSelected toolSelected={toolSelected} deleteTool={deleteToolSelected} />
+                        <ListToolSelected toolSelected={toolSelected} deleteTool={useDeleteToolSelected} />
                     </div>
                     <ImageUpload file={file} setFile={setFile} />
                     <ImageUploadMultiple files={files} setFiles={setFiles} />
@@ -339,7 +228,7 @@ function EditProject() {
                         fullWidth
                         className={classes.btnCheck}
                         disabled={formState.isValid === false || toolSelected.length === 0 ? true : false}
-                        onClick={onSubmitCheck}
+                        onClick={useOnSubmitCheck}
                     >
                         ตรวจสอบ
                     </Button>

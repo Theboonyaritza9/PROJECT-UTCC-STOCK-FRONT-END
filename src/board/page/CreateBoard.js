@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import { Container, Paper, TextField, Button, Divider } from "@material-ui/core"
-import { makeStyles } from '@material-ui/core/styles'
-import { useForm } from "../../shared/hooks/form-hook"
-import { VALIDATOR_REQUIRE } from "../../shared/util/validators"
-import Input from "../../shared/components/FormElements/Input"
+import React, { useState, useEffect } from 'react';
+import { Container, Paper, TextField, Button, Divider } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+import { useForm } from "../../shared/hooks/form-hook";
+import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
 import { useDispatch, useSelector } from "react-redux";
 import { toolListAction } from "../../actions/toolActions";
+import { useFilter } from "../../shared/util/SelectFilterBoard";
+
+// Component
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
+import SelectComponent from '../../shared/components/FormElements/Select';
+import ListToolSelected from '../components/ListToolSelected';
+import Input from "../../shared/components/FormElements/Input";
 
 
-
-
+// CSS
 import "./CreateBoard.css"
-import ImageUpload from '../../shared/components/FormElements/ImageUpload'
-import SelectComponent from '../../shared/components/FormElements/Select'
-import ListToolSelected from '../components/ListToolSelected'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -59,9 +62,6 @@ function CreateBoard() {
     const [toolSelected, setToolSelected] = useState([]);
     const [toolBackup, setToolBackup] = useState([])
 
-
-
-
     const [formState, inputHandler] = useForm(
         {
             name: {
@@ -72,11 +72,19 @@ function CreateBoard() {
         false
     );
 
+    const [useTypeFilter, useCategoryFilter, useNameFilter, useOnSubmitToolSelected, useDeleteToolSelected] = useFilter(
+        tools, toolBackup,typeFilter, categoryFilter, nameFilter,
+        setTools, setToolBackup, setTypeFilter, setCategoryFilter, setNameFilter,
+        setTypeSelect, setCategorySelect, setNameSelect,
+        totalSelect, toolSelected,
+        setTotalSelect, setToolSelected
+    );
+
 
     useEffect(() => {
         // ดึงข้อมูลอุปกรณ์สำหรับเพิ่มลงในรายการบอร์ด
         dispatch(toolListAction());
-        if(toolList.tools.length !== 0) {
+        if (toolList.tools.length !== 0) {
             setTools(toolList.tools)
         }
         return () => {
@@ -87,7 +95,6 @@ function CreateBoard() {
     // send data to front-end
     const onSubmit = (e) => {
         e.preventDefault();
-
         let newTool = {
             boardName: formState.inputs.name.value,
             boardCode: boardCode,
@@ -98,77 +105,8 @@ function CreateBoard() {
             description: description,
             tools: toolSelected
         }
-
         console.log(newTool);
     }
-
-
-    const onChangeTypeFilter = (e) => {
-        let filterData = tools.filter((item) => item.type.toLowerCase() === e.target.value)
-        setTypeFilter(filterData);
-        setCategoryFilter(filterData);
-        setTypeSelect(e.target.value);
-        setNameFilter(filterData)
-    }
-
-    const onChangeCategoryFilter = (e) => {
-        setCategorySelect(e.target.value);
-        let filterData = typeFilter.filter((item) => item.category.toLowerCase() === e.target.value)
-        setNameFilter(filterData);
-
-    }
-
-    const onChangeNameFilter = (e) => {
-        setNameSelect(e.target.value);
-        let filterData = categoryFilter.filter((item) => item.toolName.toLowerCase() === e.target.value);
-        setNameFilter(filterData)
-    }
-
-
-    const onSubmitToolSelected = () => {
-        let { id, toolName, type, category, size, imageProfile } = nameFilter[0];
-        // เก็บข้อมูลอุปกรณ์ที่เลือก ไปยังตัวแปรใหม่ เพื่อ 
-        // 1. ป้องกันผู้ใช้เลือกอุปกรณ์ที่เหมือนกัน เช่น R100K 10 ตัว, R100K 5 ตัว จริงๆแล้วผู้ใช้ควรเลือก R100K 15 ตัว
-        // 2. ลบข้อมูลในตัวแปร tools เพื่อป้องกันค่าอุปกรณ์ที่เลือกแล้วมาแสดงใน select tag ซ้ำ แล้วนำค่าที่ลบมาเก็บไว้ในตัวแปร กรณี ผู้ใช้ลบข้อมูลอุปกรณ์ที่เลือกในตัวแปร
-        // toolSelected ก็จะนำค่าที่ลบ นำกลับคืนสู่ตัวแปร tools 
-        let backupData = [...toolBackup, nameFilter[0]]
-        let newtool = tools.filter((tool) => tool.id !== nameFilter[0].id)
-        // ลบอุปกรณ์ที่ถูกเลือกไปยังบอร์ด
-        setTools(newtool)
-        // backup อุปกรณ์ที่ถูกลบ
-        setToolBackup(backupData)
-        
-
-        let createNewTool = {
-            id,
-            toolName,
-            type,
-            category,
-            size,
-            imageProfile,
-            total: totalSelect
-        }
-
-        setTotalSelect("")
-        setNameSelect("")
-        setCategorySelect("")
-        setTypeSelect("")
-        setToolSelected([...toolSelected, createNewTool])
-        setCategoryFilter([])
-    }
-
-    const deleteToolSelected = (id) => { 
-        let findData = toolBackup.find((item) => item.id === id);
-        setToolSelected(toolSelected.filter(item => item.id !== id));
-        setToolBackup(toolBackup.filter(item => item.id !== id))
-        // set ข้อมูลที่ถูกลบกลับไปยังตัวแปรเดิม
-        setTools([...tools, findData])
-        setTotalSelect("")
-        setNameSelect("")
-        setCategorySelect("")
-        setTypeSelect("")
-    }
-
 
     return (
         <Container maxWidth="sm">
@@ -198,12 +136,12 @@ function CreateBoard() {
                     <h3>อุปกรณ์</h3>
                     <Paper className={classes.PaperFilter}>
                         <div className="editboard-select-group">
-                            <SelectComponent list={tools} typeFilter="tool" filterName="ชนิด" dataType="type" onChange={onChangeTypeFilter} value={typeSelect} />
-                            <SelectComponent list={typeFilter} typeFilter="tool" filterName="ประเภท" dataType="category" onChange={onChangeCategoryFilter} value={categorySelect} />
+                            <SelectComponent list={tools} typeFilter="tool" filterName="ชนิด" dataType="type" onChange={useTypeFilter} value={typeSelect} />
+                            <SelectComponent list={typeFilter} typeFilter="tool" filterName="ประเภท" dataType="category" onChange={useCategoryFilter} value={categorySelect} />
                         </div>
-                        <SelectComponent list={categoryFilter} typeFilter="tool" filterName="ชื่ออุปกรณ์" dataType="name" onChange={onChangeNameFilter} value={nameSelect} />
+                        <SelectComponent list={categoryFilter} typeFilter="tool" filterName="ชื่ออุปกรณ์" dataType="name" onChange={useNameFilter} value={nameSelect} />
                         <TextField
-                            label="จำนวนบอร์ด"
+                            label="จำนวนอุปกรณ์"
                             variant="outlined"
                             type="number"
                             fullWidth
@@ -211,19 +149,19 @@ function CreateBoard() {
                             className={classes.inputFilter}
                             onChange={(e) => setTotalSelect(e.target.value)}
                         />
-                        <Button variant="contained" size="small" color="primary" className={classes.margin} onClick={onSubmitToolSelected}>
+                        <Button variant="contained" size="small" color="primary" className={classes.margin} onClick={useOnSubmitToolSelected}>
                             เพิ่ม
                         </Button>
                         <Divider />
                         <h4>อุปกรณ์ที่ใช้ในบอร์ด</h4>
-                        <ListToolSelected toolSelected={toolSelected} deleteTool={deleteToolSelected} />
+                        <ListToolSelected toolSelected={toolSelected} deleteTool={useDeleteToolSelected} />
 
                     </Paper>
 
 
                     <div className="createboard-input-group">
                         <TextField
-                            label="จำนวน"
+                            label="จำนวนบอร์ด"
                             variant="outlined"
                             fullWidth
                             type="number"
@@ -271,3 +209,5 @@ function CreateBoard() {
 }
 
 export default CreateBoard
+
+// 279
