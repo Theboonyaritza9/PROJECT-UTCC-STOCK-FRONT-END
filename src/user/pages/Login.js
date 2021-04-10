@@ -2,7 +2,7 @@ import React from 'react'
 
 function Login() {
     return (
-        form >
+        <form >
             <div className="GroubLogin">
                 <h2>Login</h2>
                     <div className="GroupEmial">
