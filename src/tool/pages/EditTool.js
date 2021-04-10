@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import { useForm } from "../../shared/hooks/form-hook"
-import { VALIDATOR_REQUIRE } from "../../shared/util/validators"
-import { toolItem } from "../../Api"
-import { Container, Paper, TextField, Button } from "@material-ui/core"
-import { makeStyles } from '@material-ui/core/styles'
+import React, { useState } from 'react';
+import { useForm } from "../../shared/hooks/form-hook";
+import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
+import { toolItem } from "../../Api";
+import { Container, Paper, TextField, Button } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
 
 // Component
-import ImageUpload from '../../shared/components/FormElements/ImageUpload'
-import ImageUploadMultiple from '../../shared/components/FormElements/ImageUploadMultiple'
-import Input from "../../shared/components/FormElements/Input"
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
+import ImageUploadMultiple from '../../shared/components/FormElements/ImageUploadMultiple';
+import Input from "../../shared/components/FormElements/Input";
 
 // CSS
-import "./EditTool.css"
+import "./EditTool.css";
 
 
 const useStyles = makeStyles((theme) => ({
