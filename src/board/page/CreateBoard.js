@@ -15,7 +15,7 @@ import Input from "../../shared/components/FormElements/Input";
 
 
 // CSS
-import "./CreateBoard.css"
+import "./CreateBoard.css";
 
 
 

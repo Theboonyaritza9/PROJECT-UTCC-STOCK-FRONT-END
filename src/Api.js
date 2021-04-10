@@ -961,4 +961,88 @@ export const boardIncompleteList = [
 ]
 
 
+export const typeAndcategory_select = [
+    {
+        id: 1,
+        type: "Resistor",
+        category: ["Chip", "SMD", "Metal Film", "Carbon Composition", "Carbon Film", "ทนความร้อน"]
+    },
+    {
+        id: 2,
+        type: "Capacitor",
+        category: ["Ceramic", "Electrolytic Capacitor", "Capacitor SMD", "Mylar Capacitor", "Conductive Polymer Hybrid Aluminum Electrolytic Capacitors"]
+    },
+    {
+        id: 3,
+        type: "Crystal",
+        category: ["SMD", "3 pin", "2 pin"]
+    },
+    {
+        id: 4,
+        type: "DIOD",
+        category: ["Schottky Diode", "Fast Recovery Diode", "SMD"]
+    },
+    {
+        id: 5,
+        type: "IC",
+        category: ["BGA", "Pym Controller", "Power Amp", "Regulater", "Switching", "Driver Motor", "LED, LCD, Plasma", "Op Amp", "Memory"]
+    },
+    {
+        id: 6,
+        type: "IC SMD",
+        category: []
+    },
+    {
+        id: 7,
+        type: "Memory",
+        category: []
+    },
+    {
+        id: 8,
+        type: "Opto",
+        category: []
+    },
+    {
+        id: 9,
+        type: "Relays",
+        category: []
+    },
+    {
+        id: 10,
+        type: "Switch",
+        category: []
+    },
+    {
+        id: 11,
+        type: "Transistor",
+        category: []
+    },
+    {
+        id: 12,
+        type: "Transistor SMD",
+        category: []
+    },
+    {
+        id: 13,
+        type: "Triac",
+        category: []
+    },
+    {
+        id: 14,
+        type: "Fuse",
+        category: []
+    },
+    {
+        id: 15,
+        type: "Thyristor (SCR)",
+        category: []
+    },
+    {
+        id: 16,
+        type: "Volume",
+        category: []
+    }
+]
+
+
 

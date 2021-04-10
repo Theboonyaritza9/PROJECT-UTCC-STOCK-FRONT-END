@@ -149,7 +149,7 @@ function BoardRequest() {
                         <SelectValidation
                             id="name"
                             list={boards}
-                            filterName="ชื่อบอร์ด *"
+                            filterName="ชื่อบอร์ด"
                             validators={[VALIDATOR_REQUIRE()]}
                             errorText="โปรดเลือกข้อมูล."
                             onInput={inputHandler}
@@ -161,7 +161,7 @@ function BoardRequest() {
                             id="total"
                             element="input"
                             type="number"
-                            label="จำนวน *"
+                            label="จำนวน"
                             validators={[VALIDATOR_REQUIRE()]}
                             errorText="โปรดใส่ข้อมูล."
                             onInput={inputHandler}

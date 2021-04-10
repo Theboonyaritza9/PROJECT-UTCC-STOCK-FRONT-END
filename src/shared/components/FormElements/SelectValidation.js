@@ -1,7 +1,6 @@
 import React, { useReducer, useEffect } from 'react'
 import { Select, FormControl, InputLabel, MenuItem } from "@material-ui/core"
-
-import { validate } from '../../util/validators.js'
+import { validate } from "../../util/validators.js";
 import { makeStyles } from '@material-ui/core/styles'
 
 
@@ -88,13 +87,13 @@ const SelectValidation = props => {
 
     return (
         <FormControl variant="outlined" className={classes.formControl} error={!inputState.isValid && inputState.isTouched}  >
-            <InputLabel id={id}>{props.filterName}</InputLabel>
+            <InputLabel id={id}><div>{props.filterName} <span style={{color: "red", fontWeight: "bold"}}>*</span></div></InputLabel>
             <Select
                 labelId={id}
                 id={id}
                 value={inputState.value}
                 onChange={changeHandler}
-                label="Age"
+                label="ชื่อบอร์ด"
                 onBlur={touchHandler}
             >
                 <MenuItem value="">

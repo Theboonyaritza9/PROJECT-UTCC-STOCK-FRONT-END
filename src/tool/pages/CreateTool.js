@@ -1,12 +1,20 @@
-import React, { useState } from 'react'
-import { Container, Paper, TextField, Button } from "@material-ui/core"
-import { makeStyles } from '@material-ui/core/styles'
-import { useForm } from "../../shared/hooks/form-hook"
-import { VALIDATOR_REQUIRE } from "../../shared/util/validators"
-import Input from "../../shared/components/FormElements/Input"
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { useForm } from "../../shared/hooks/form-hook";
+import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
+import { typeAndcategory_select } from "../../Api";
 
-import "./CreateTool.css"
-import ImageUpload from '../../shared/components/FormElements/ImageUpload'
+// Components
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
+import Input from "../../shared/components/FormElements/Input";
+import { Container, Paper, TextField, Button } from "@material-ui/core";
+
+
+
+// CSS
+import "./CreateTool.css";
+import SelectType from '../components/SelectType';
+import SelectCategory from '../components/SelectCategory';
 
 const useStyles = makeStyles((theme) => ({
     textarea: {
@@ -28,6 +36,9 @@ function CreateTool() {
     const [description, setDescription] = useState('');
     const [toolCode, setToolCode] = useState('');
     const [file, setFile] = useState(null);
+    const [selectValue] = useState(typeAndcategory_select);
+    const [categoryValue, setCategoryValue] = useState("");
+    const [categorySelect, setCategorySelect] = useState([])
 
     const [formState, inputHandler] = useForm(
         {
@@ -38,12 +49,6 @@ function CreateTool() {
         },
         {
             type: {
-                value: '',
-                isValid: false
-            }
-        },
-        {
-            category: {
                 value: '',
                 isValid: false
             }
@@ -61,7 +66,7 @@ function CreateTool() {
             toolCode: toolCode,
             total: total,
             type: formState.inputs.type.value,
-            category: formState.inputs.category.value,
+            category: categoryValue,
             size: size,
             imageProfile: file,
             toollimit: '',
@@ -95,26 +100,16 @@ function CreateTool() {
                         onChange={(e) => setToolCode(e.target.value)}
                     />
                     <div className="createtool-input-group">
-                        <Input
+                        <SelectType
+                            selectValue={selectValue}
                             id="type"
-                            element="input"
-                            type="text"
-                            label="ชนิด"
+                            filterName="ชนิด"
                             validators={[VALIDATOR_REQUIRE()]}
-                            errorText="โปรดใส่ข้อมูล."
+                            errorText="โปรดเลือกข้อมูล."
                             onInput={inputHandler}
-                            required
-                        />
-                        <Input
-                            id="category"
-                            element="input"
-                            type="text"
-                            label="ประเภท"
-                            validators={[VALIDATOR_REQUIRE()]}
-                            errorText="โปรดใส่ข้อมูล."
-                            onInput={inputHandler}
-                            required
-                        />
+                            setCategorySelect={setCategorySelect}
+                            required />
+                        <SelectCategory selectValue={categorySelect} setCategoryValue={setCategoryValue} categoryValue={categoryValue} />
                     </div>
                     <div className="createtool-input-group">
                         <TextField
@@ -124,7 +119,6 @@ function CreateTool() {
                             type="number"
                             className={classes.input}
                             onChange={(e) => setTotal(e.target.value)}
-
                         />
                         <TextField
                             label="ขนาด"
@@ -135,7 +129,7 @@ function CreateTool() {
                             onChange={(e) => setSize(e.target.value)}
                         />
                     </div>
-                    <ImageUpload  file={file} setFile={setFile} />
+                    <ImageUpload file={file} setFile={setFile} />
                     <TextField
                         id="outlined-multiline-flexible"
                         label="รายละเอียดเพิ่มเติม"
