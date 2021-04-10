@@ -1,4 +1,4 @@
-module.exports = (
+export const CheckProject = (
     formState, toolSelected, toolCal,
     setOpenAlert, setValidTool
 ) => {

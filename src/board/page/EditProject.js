@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toolListAction } from "../../actions/toolActions";
 import { makeStyles } from '@material-ui/core/styles';
 import { useFilter } from "../../shared/util/SelectFilterProject";
-import CheckProject from "../../shared/util/CheckProject";
+import { CheckProject } from "../../shared/util/CheckProject";
 import { useOnSubmitProject } from "../../shared/util/SubmitProject";
 
 // Component

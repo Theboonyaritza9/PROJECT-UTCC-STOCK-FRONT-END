@@ -5,7 +5,7 @@ import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
 import { useDispatch, useSelector } from "react-redux";
 import { toolListAction } from "../../actions/toolActions";
 import { useFilter } from "../../shared/util/SelectFilterProject";
-import CheckProject from "../../shared/util/CheckProject";
+import { CheckProject } from "../../shared/util/CheckProject";
 import { useOnSubmitProject } from "../../shared/util/SubmitProject";
 
 // Component
