@@ -25,6 +25,7 @@ import Home from "./Home";
 import Login from "./user/pages/Login";
 import Register from "./user/pages/Register";
 import Profile from "./user/pages/Profile";
+import AuthUser from "./user/pages/AuthUser";
 
 
 function App() {
@@ -96,6 +97,9 @@ function App() {
             </Route>
             <Route path="/profile/id">
               <EditProfile />
+            </Route>
+            <Route path="/auth/users">
+              <AuthUser />
             </Route>
             <Redirect to="/" />
           </Switch>

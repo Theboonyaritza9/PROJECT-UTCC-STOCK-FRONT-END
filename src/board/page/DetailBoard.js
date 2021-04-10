@@ -113,7 +113,7 @@ function DetailBoard() {
                         }
                     </div>
                     <div className="detailboard-list">
-                        <p>การแจ้งเตือนจำนวนบอร์ด(จำนวนบอร์ด 58 น้อยกว่า 68 = กำลังจะหมด)</p>
+                        <p>การแจ้งเตือนจำนวนบอร์ด</p>
                         <p>{board.limit}</p>
                     </div>
                     <div className="detailboard-des">

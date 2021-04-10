@@ -1,13 +1,13 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { Container, Paper} from "@material-ui/core"
 
     const data = {
         id: "cacd5252",
         email: "boonyarit@hotmail.com",
-        name: "Roze",
+        name: "Boonyarit",
         password: "1234",
         status: "Admin",
-        image: "https://images.unsplash.com/photo-1615502258994-72db7460643c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=632&q=80"
+        image: "https://i.pinimg.com/564x/95/c8/d2/95c8d2413663f98c43fbd51aa3791bdb.jpg"
     }
 
 export default function Profile() {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import SlideBar from './SlideBar';
 import { Link } from "react-router-dom";
 import { listToolApi, listBoards } from "../../../Api";
@@ -7,11 +7,11 @@ import { useHistory } from "react-router-dom";
 
 // Component
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { Avatar, Menu, MenuItem, Badge, InputBase, Typography, IconButton, Toolbar, AppBar, TextField } from "@material-ui/core";
+import { Avatar, Menu, MenuItem, Badge, Typography, IconButton, Toolbar, AppBar, TextField } from "@material-ui/core";
 
 // Icon
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+// import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -100,14 +100,14 @@ export default function Nav() {
     const [data, setData] = useState([]);
     const history = useHistory();
 
-    useEffect(async () => {
+    useEffect(() => {
         let newArr = []
-        await listToolApi.map((tool) => {
+        listToolApi.map((tool) => {
             let newData = { id: tool.id, name: tool.toolName, status: "tool" }
             newArr = [...newArr, newData]
         })
 
-        await listBoards.map((board) => {
+        listBoards.map((board) => {
             let newData = { id: board.id, name: board.boardName, status: "board" }
             newArr = [...newArr, newData]
         })
@@ -355,7 +355,9 @@ export default function Nav() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            <AccountCircle />
+                            {/* <AccountCircle /> */}
+                            <Avatar  alt="" src="https://i.pinimg.com/564x/95/c8/d2/95c8d2413663f98c43fbd51aa3791bdb.jpg" />
+
                         </IconButton>
 
                     </div>

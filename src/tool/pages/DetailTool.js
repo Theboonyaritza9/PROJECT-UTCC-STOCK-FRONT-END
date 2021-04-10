@@ -66,7 +66,7 @@ function DetailTool() {
                         }
                     </div>
                     <div className="detailtool-list">
-                        <p>การแจ้งเตือนจำนวนอุปกรณ์(จำนวนอุปกรณ์ 58 น้อยกว่า 68 = กำลังจะหมด)</p>
+                        <p>การแจ้งเตือนจำนวนอุปกรณ์</p>
                         <p>{tool.limit}</p>
                     </div>
                     <div className="detailtool-des">

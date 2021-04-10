@@ -8,7 +8,10 @@ import { Link } from "react-router-dom"
 
 // Component
 import Input from "../../shared/components/FormElements/Input";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Avatar, Button, Modal, Backdrop, Fade, TextField } from "@material-ui/core";
+import {
+    Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Avatar,
+    Button, Modal, Backdrop, Fade, TextField
+} from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 
 // Icon
@@ -19,6 +22,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 // CSS
 import "./TableTool.css"
 import SelectFilter from '../../shared/components/UIElements/SelectFilter';
+import Loading from '../../shared/components/UIElements/Loading';
 
 const columns = [
     { label: 'รูปภาพ', minWidth: 100 },
@@ -76,7 +80,7 @@ export default function TableTool() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const toolList = useSelector((state) => state.toolList);
-    const { messageAlert } = toolList;
+    const { messageAlert, loading } = toolList;
     const [tools, setTools] = useState([])
     const [defaultValue, setDefaultValue] = useState([])
     const [page, setPage] = useState(0);
@@ -155,86 +159,87 @@ export default function TableTool() {
             <SelectFilter label="ชนิด" defaultValue={defaultValue} data={tools} setData={setTools} filterType="type" setValueFilterType={setValueFilterType} valueFilterType={valueFilterType} valueFilterStatus={valueFilterStatus} setValueFilterStatus={setValueFilterStatus} />
             <SelectFilter label="สถานะ" defaultValue={defaultValue} data={tools} setData={setTools} filterType="status" setValueFilterType={setValueFilterType} valueFilterType={valueFilterType} valueFilterStatus={valueFilterStatus} setValueFilterStatus={setValueFilterStatus} />
 
-
-            <Paper className={classes.root}>
-                <TableContainer className={classes.container}>
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column, index) => (
-                                    <TableCell
-                                        key={index}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {tools.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((tool, index) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                                        <TableCell align="left">
-                                            <Avatar variant="square" src={tool.imageProfile} />
+            { loading ? <Loading loading={loading} /> :
+                <Paper className={classes.root}>
+                    <TableContainer className={classes.container}>
+                        <Table stickyHeader aria-label="sticky table">
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map((column, index) => (
+                                        <TableCell
+                                            key={index}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                        >
+                                            {column.label}
                                         </TableCell>
-                                        <TableCell align="left">
-                                            <p>{tool.toolName}</p>
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            <p>{tool.toolCode}</p>
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            <p>{tool.type}</p>
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            <p>{tool.category}</p>
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            <p>{tool.size}</p>
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            {Number(tool.total) > Number(tool.limit) ?
-                                                <p>มี</p> :
-                                                Number(tool.total) === 0 ?
-                                                    <p style={{ color: "red" }}>หมด</p> : <p style={{ color: "orange" }}>กำลังจะหมด</p>
-                                            }
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            <p>{tool.total}</p>
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            <div className="table-tool-btn-action">
-                                                <Button variant="contained" color="primary" startIcon={<RestorePageIcon />} onClick={() => handleOpenModal(tool.toolName, index, "เบิก")}>
-                                                    เบิก
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {tools.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((tool, index) => {
+                                    return (
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                                            <TableCell align="left">
+                                                <Avatar variant="square" src={tool.imageProfile} />
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                <p>{tool.toolName}</p>
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                <p>{tool.toolCode}</p>
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                <p>{tool.type}</p>
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                <p>{tool.category}</p>
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                <p>{tool.size}</p>
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                {Number(tool.total) > Number(tool.limit) ?
+                                                    <p>มี</p> :
+                                                    Number(tool.total) === 0 ?
+                                                        <p style={{ color: "red" }}>หมด</p> : <p style={{ color: "orange" }}>กำลังจะหมด</p>
+                                                }
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                <p>{tool.total}</p>
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                <div className="table-tool-btn-action">
+                                                    <Button variant="contained" color="primary" startIcon={<RestorePageIcon />} onClick={() => handleOpenModal(tool.toolName, index, "เบิก")}>
+                                                        เบิก
                                                 </Button>
-                                                <Button className={classes.btnAdd} variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenModal(tool.toolName, index, "เพิ่ม")} >
-                                                    เพิ่ม
+                                                    <Button className={classes.btnAdd} variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenModal(tool.toolName, index, "เพิ่ม")} >
+                                                        เพิ่ม
                                                 </Button>
-                                                <Link to={`/${tool.id}/tool`}>
-                                                    <Button variant="contained" color="default" startIcon={<VisibilityIcon />} >
-                                                        ดู
+                                                    <Link to={`/${tool.id}/tool`}>
+                                                        <Button variant="contained" color="default" startIcon={<VisibilityIcon />} >
+                                                            ดู
                                                     </Button>
-                                                </Link>
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    count={tools.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
-            </Paper>
+                                                    </Link>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 100]}
+                        component="div"
+                        count={tools.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+                </Paper>
+            }
 
             {/* Prompt Request & Add Form */}
 

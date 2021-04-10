@@ -78,7 +78,7 @@ export default function TableBoard() {
     // const [tools] = useState(listToolApi);
     const [openModal, setOpenModal] = useState(false);
     const [headerForm, setHeaderForm] = useState('');
-    const [headerId, setHeaderId] = useState('');
+    // const [headerId, setHeaderId] = useState('');
     const [boardId, setBoardId] = useState('');
     const [valueFilterType, setValueFilterType] = useState("ทั้งหมด");
     const [valueFilterStatus, setValueFilterStatus] = useState("ทั้งหมด");
@@ -116,7 +116,7 @@ export default function TableBoard() {
     const handleOpenModal = (name, id, header) => {
         // const newName = name
         setHeaderForm(header + ' ' + name)
-        setHeaderId(header);
+        // setHeaderId(header);
         setBoardId(id);
         setOpenModal(true);
     };
@@ -133,7 +133,7 @@ export default function TableBoard() {
         setOpenModal(false)
     }
 
-    console.log(boards)
+    // console.log(boards)
 
     return (
         <div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from "../../shared/hooks/form-hook"
 import { VALIDATOR_REQUIRE } from "../../shared/util/validators"
 import { toolItem } from "../../Api"
-import { Container, Paper, TextField, Button, Divider } from "@material-ui/core"
+import { Container, Paper, TextField, Button } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles'
 
 // Component
