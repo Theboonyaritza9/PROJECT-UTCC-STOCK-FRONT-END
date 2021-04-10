@@ -53,6 +53,11 @@ function EditProfile() {
     const handleSubmitEdit = (e) => {
         e.preventDefault()
         console.log(formState.inputs)
+        let data = {
+            email: "boon@hotmail",
+            password: "1234"
+        }
+
     }
 
     return (

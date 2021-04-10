@@ -87,7 +87,7 @@ export default function TableHistoryBoard() {
     const [openDescription, setOpenDescription] = useState(false);
 
 
-    const [formState, inputHandler, setFormData] = useForm(
+    const [formState, inputHandler] = useForm(
         {
             total: {
                 value: '',

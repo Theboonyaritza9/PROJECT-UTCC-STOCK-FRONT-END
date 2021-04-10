@@ -941,7 +941,7 @@ export const boardIncompleteList = [
     },
     {
         id: uuidv4(),
-        boardName: "ET-OPPTO",
+        boardName: "ET-UJC PLUS",
         username: "Katagi",
         userStatus: "Admin",
         date: "11/12/63",
