@@ -8,13 +8,12 @@ import { typeAndcategory_select } from "../../Api";
 import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 import Input from "../../shared/components/FormElements/Input";
 import { Container, Paper, TextField, Button } from "@material-ui/core";
-
-
+import SelectType from '../components/SelectType';
+import SelectCategory from '../components/SelectCategory';
 
 // CSS
 import "./CreateTool.css";
-import SelectType from '../components/SelectType';
-import SelectCategory from '../components/SelectCategory';
+
 
 const useStyles = makeStyles((theme) => ({
     textarea: {
