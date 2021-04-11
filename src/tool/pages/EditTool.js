@@ -4,11 +4,15 @@ import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
 import { toolItem } from "../../Api";
 import { Container, Paper, TextField, Button } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
+import { typeAndcategory_select } from "../../Api";
+
 
 // Component
 import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 import ImageUploadMultiple from '../../shared/components/FormElements/ImageUploadMultiple';
 import Input from "../../shared/components/FormElements/Input";
+import SelectType from '../components/SelectType';
+import SelectCategory from '../components/SelectCategory';
 
 // CSS
 import "./EditTool.css";
@@ -34,6 +38,9 @@ function EditTool() {
     const [category, setCategory] = useState(tool.category)
     const [description, setDescription] = useState(tool.description);
     const [toolCode, settoolCode] = useState(tool.toolCode);
+    const [selectValue] = useState(typeAndcategory_select);
+    const [categoryValue, setCategoryValue] = useState("");
+    const [categorySelect, setCategorySelect] = useState([])
 
     const [formState, inputHandler] = useForm(
         {
@@ -46,10 +53,6 @@ function EditTool() {
                 isValid: false
             },
             type: {
-                value: '',
-                isValid: false
-            },
-            category: {
                 value: '',
                 isValid: false
             }
@@ -65,7 +68,7 @@ function EditTool() {
             toolCode: toolCode,
             total: formState.inputs.total.value,
             type: formState.inputs.type.value,
-            category: formState.inputs.category.value,
+            category: categoryValue,
             imageProfile: file,
             limit: limit,
             description: description,
@@ -112,7 +115,7 @@ function EditTool() {
                         onChange={(e) => setLimit(e.target.value)}
                     />
                     <div className="edittool-input-group">
-                        <Input
+                        {/* <Input
                             id="type"
                             element="input"
                             type="text"
@@ -135,16 +138,24 @@ function EditTool() {
                             initialValue={tool.category}
                             initialValid={true}
                             required
-                        />
-                        {/* <TextField
-                            label="การแจ้งเตือนอุปกรณ์"
-                            variant="outlined"
-                            type="number"
-                            fullWidth
-                            value={category}
-                            className={classes.margin}
-                            onChange={(e) => setCategory(e.target.value)}
                         /> */}
+                        <SelectType
+                            selectValue={selectValue}
+                            id="type"
+                            filterName="ชนิด"
+                            validators={[VALIDATOR_REQUIRE()]}
+                            errorText="โปรดเลือกข้อมูล."
+                            onInput={inputHandler}
+                            setCategorySelect={setCategorySelect}
+                            initialValue={"Resistor"}
+                            initialValid={true}
+                            required />
+                        <SelectCategory
+                            selectValue={categorySelect}
+                            setCategoryValue={setCategoryValue}
+                            categoryValue={categoryValue}
+                            initialValue={"SMD"}
+                        />
                     </div>
                     <Input
                         id="total"

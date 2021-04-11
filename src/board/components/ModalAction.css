@@ -1,0 +1,17 @@
+.modal-action-board {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-action-board-btn-group button {
+    margin-right: 10px;
+}
+
+
+@media (max-width: 500px) {
+    .modal-action-board {
+        width: 90%;
+        margin: 0 auto;
+    }
+}

@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Avatar, Button, Modal, Backdrop, Fade, TextField } from "@material-ui/core";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Avatar, Button } from "@material-ui/core";
 import { useForm } from "../../shared/hooks/form-hook";
-import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
 import { boardListAction, addBoardToTotal } from "../../actions/boardActions";
 import { Link } from "react-router-dom";
 
-// Component
-import Input from "../../shared/components/FormElements/Input";
+// Components
+import SelectFilter from '../../shared/components/UIElements/SelectFilter';
+import ModalAction from './ModalAction';
 
 // Icon
 import AddIcon from '@material-ui/icons/Add';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 // CSS
-import "./TableBoard.css"
-import SelectFilter from '../../shared/components/UIElements/SelectFilter';
+import "./TableBoard.css";
+
 
 const columns = [
     { label: 'รูปภาพ', minWidth: 100 },
@@ -45,20 +45,6 @@ const useStyles = makeStyles((theme) => ({
     container: {
         maxHeight: 440,
     },
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-    },
-    textarea: {
-        margin: "10px 0"
-    },
     btnAdd: {
         backgroundColor: "#28a745",
         color: "#fff"
@@ -85,7 +71,7 @@ export default function TableBoard() {
 
     useEffect(() => {
         dispatch(boardListAction());
-        if(boardList.boards.length !== 0) {
+        if (boardList.boards.length !== 0) {
             setBoards(boardList.boards)
             setDefaultValue(boardList.boards)
         }
@@ -210,50 +196,15 @@ export default function TableBoard() {
             </Paper>
 
             {/* Prompt Request & Add Form */}
-
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={openModal}
-                onClose={handleCloseModal}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={openModal}>
-                    <div className={classes.paper}>
-                        <h2 id="transition-modal-title">{headerForm}</h2>
-                        <form onSubmit={onSubmitAdd}>
-                            <Input
-                                id="total"
-                                element="input"
-                                type="number"
-                                label="จำนวน"
-                                validators={[VALIDATOR_REQUIRE()]}
-                                errorText="Please enter a valid Total."
-                                onInput={inputHandler}
-                                required
-                            />
-                            <TextField
-                                id="outlined-multiline-flexible"
-                                label="รายละเอียดเพิ่มเติม"
-                                multiline
-                                rowsMax={4}
-                                variant="outlined"
-                                fullWidth
-                                className={classes.textarea}
-                            />
-                            <div className="table-board-btn-action">
-                                <Button type="submit" variant="contained" color="primary" disabled={!formState.isValid} >ยืนยัน</Button>
-                                <Button variant="contained" color="secondary" onClick={() => setOpenModal(false)}>ยกเลิก</Button>
-                            </div>
-                        </form>
-                    </div>
-                </Fade>
-            </Modal>
+            <ModalAction
+                openModal={openModal}
+                handleCloseModal={handleCloseModal}
+                headerForm={headerForm}
+                onSubmitAdd={onSubmitAdd}
+                inputHandler={inputHandler}
+                formState={formState}
+                setOpenModal={setOpenModal}
+            />
         </div >
     );
 }

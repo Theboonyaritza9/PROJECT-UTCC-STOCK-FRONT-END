@@ -272,12 +272,12 @@ export const historyBoard = [
 export const historyProject = [
     {
         id: "h1",
-        date: "13/02/63",
+        date: "4/10/2021",
         projectName: "สถาบันน้ำ",
         username: "Boonyarit",
         status: "Admin",
         total: 12,
-        time: "12.30 pm",
+        time: "12:30",
         description: "nothing",
         profileImage: "/images/b3.jpg",
         images: [
@@ -286,18 +286,18 @@ export const historyProject = [
             "/images/b3.jpg",
             "/images/detailTool.jpg"
         ],
-        exp: "12/08/63",
+        exp: "10/10/2021",
         projectCode: "DBF1515",
         type: "Others"
     },
     {
         id: "h2",
-        date: "14/02/63",
+        date: "3/12/2021",
         projectName: "LED-HIGHWAY",
         username: "Boonyarit",
         status: "Admin",
         total: 4,
-        time: "14.30 pm",
+        time: "14:30",
         description: "there was an insufficient tool",
         profileImage: "/images/b3.jpg",
         images: [
@@ -306,18 +306,18 @@ export const historyProject = [
             "/images/b3.jpg",
             "/images/detailTool.jpg"
         ],
-        exp: "14/08/63",
+        exp: "9/12/2021",
         projectCode: "DBF151561",
         type: "Others"
     },
     {
         id: "h3",
-        date: "15/02/63",
+        date: "1/14/2021",
         projectName: "ET-MEGA-IT",
         username: "Boonyarit",
         status: "Admin",
         total: 7,
-        time: "09.10 am",
+        time: "9:10",
         description: "nothing",
         profileImage: "/images/b3.jpg",
         images: [
@@ -326,7 +326,7 @@ export const historyProject = [
             "/images/b3.jpg",
             "/images/detailTool.jpg"
         ],
-        exp: "15/08/63",
+        exp: "7/14/2021",
         projectCode: "SVF1515",
         type: "Others"
     }
@@ -335,12 +335,12 @@ export const historyProject = [
 export const projectItem =
 {
     id: "h1",
-    date: "13/02/63",
+    date: "4/10/2021",
     projectName: "สถาบันน้ำ",
     username: "Boonyarit",
     status: "Admin",
     total: 12,
-    time: "12.30 pm",
+    time: "12:30",
     description: "nothing",
     profileImage: "/images/b3.jpg",
     images: [
@@ -349,7 +349,7 @@ export const projectItem =
         "/images/b3.jpg",
         "/images/detailTool.jpg"
     ],
-    exp: "12/08/63",
+    exp: "10/10/2021",
     projectCode: "DBF1515",
     type: "Others",
     tools: [

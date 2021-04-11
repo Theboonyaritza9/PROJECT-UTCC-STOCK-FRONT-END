@@ -8,6 +8,11 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePag
 import RestoreIcon from '@material-ui/icons/Restore';
 import EditIcon from '@material-ui/icons/Edit';
 import DescriptionIcon from '@material-ui/icons/Description';
+import ModalSubmit from '../../shared/components/UIElements/ModalSubmit';
+
+// Component
+import SelectFilterTime from '../../shared/components/UIElements/SelectFilterTime';
+
 
 
 const columns = [
@@ -65,10 +70,10 @@ function TableHistoryProject() {
     const classes = useStyles();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [projects] = useState(historyProject);
+    const [projects, setProjects] = useState(historyProject);
+    const [defaultValueProjects] = useState(historyProject);
     const [openRestore, setOpenRestore] = useState(false);
     const [data, setData] = useState();
-    const [openDescription, setOpenDescription] = useState(false);
 
 
     const handleChangePage = (event, newPage) => {
@@ -99,18 +104,9 @@ function TableHistoryProject() {
         setData()
     }
 
-    const handleOpenDescription = (description) => {
-        setData(description)
-        setOpenDescription(true)
-    }
-
-    const handleCloseDescription = () => {
-        setOpenDescription(false)
-        setData()
-    }
-
     return (
         <div>
+            <SelectFilterTime label="ระยะเวลา" setData={setProjects} defaultValueData={defaultValueProjects} />
             <Paper className={classes.root}>
                 <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
@@ -153,7 +149,7 @@ function TableHistoryProject() {
                                             {project.exp}
                                         </TableCell>
                                         <TableCell>
-                                            <div className="TableHistoryTool-action">
+                                            <div className="modal-action-board-btn-group">
                                                 <Button variant="contained" color="primary" onClick={() => handleOpenRestore(project.projectName, project.total)} startIcon={<RestoreIcon />}>คืน</Button>
                                                 <Link to={`/project/${project.id}`}><Button variant="contained" color="secondary" startIcon={<EditIcon />}>แก้ไข</Button></Link>
                                                 <Link to={`/${project.id}/project`}><Button variant="contained" color="default" startIcon={<DescriptionIcon />}>เพิ่มเติม</Button></Link>
@@ -175,51 +171,17 @@ function TableHistoryProject() {
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={openRestore}
-                onClose={handleCloseRestore}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={openRestore}>
-                    <div className={classes.paper}>
-                        <h2 id="transition-modal-title">คุณต้องการทำขั้นตอนนี้หรือไม่ ?</h2>
-                        <div className="TableHistoryTool-action">
-                            <Button variant="contained" color="primary" onClick={handleSubmitRestore}>ยืนยัน</Button>
-                            <Button variant="contained" color="secondary" onClick={handleCloseRestore}>ยกเลิก</Button>
-                        </div>
-                    </div>
-                </Fade>
-            </Modal>
 
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={openDescription}
-                onClose={handleCloseDescription}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={openDescription}>
-                    <div className={classes.paper}>
-                        <h2 id="transition-modal-title">รายละเอียดอื่นๆ</h2>
-                        <p>{data}</p>
-                    </div>
-                </Fade>
-            </Modal>
+            <ModalSubmit
+                handleClosePrompt={handleCloseRestore}
+                handleSubmitPrompt={handleSubmitRestore}
+                openPrompt={openRestore}
+            />
+
         </div>
     );
 }
 
-export default TableHistoryProject
+export default TableHistoryProject;
+// 224
 

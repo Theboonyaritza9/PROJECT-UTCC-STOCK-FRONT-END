@@ -1,32 +1,21 @@
 import React, { useState } from 'react';
 import { boardIncompleteList } from "../../Api";
-import { Button, Modal, Backdrop, Fade } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { useForm } from "../../shared/hooks/form-hook";
 import { makeStyles } from '@material-ui/core/styles';
-import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 
 // Icon
 import UpdateIcon from '@material-ui/icons/Update';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ModalIncompleteBoard from '../components/ModalIncompleteBoard';
 
 // Component
-import Input from '../../shared/components/FormElements/Input';
 
 // CSS
 import "./BoardIncomplete.css";
+import ModalSubmit from '../../shared/components/UIElements/ModalSubmit';
 
 const useStyles = makeStyles((theme) => ({
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-    },
     button: {
         margin: "20px 0"
     },
@@ -44,7 +33,10 @@ function BoardIncomplete() {
     const [toolList] = useState(boardIncompleteList);
     const [openInput, setOpenInput] = useState(false);
     const [toolSelected, setToolSelected] = useState({});
-    const [headerPrompt, setHeaderPrompt] = useState('')
+    const [headerPrompt, setHeaderPrompt] = useState('');
+    const [openPrompt, setOpenPrompt] = useState(false);
+    const [data, setData] = useState("");
+    const [promptType, setPromptType] = useState("");
 
     const onClickUpdateAll = (items) => {
         console.log(items)
@@ -79,6 +71,30 @@ function BoardIncomplete() {
         setHeaderPrompt("")
         console.log(formState.inputs.total.value)
         console.log(toolSelected)
+    }
+
+
+    const handleOpenPrompt = (value, type) => {
+        setOpenPrompt(true)
+        setData(value)
+        setPromptType(type)
+    }
+
+    const handleClosePrompt = () => {
+        setOpenPrompt(true)
+        setData("")
+    }
+    const handleSubmitPrompt = (e) => {
+        e.preventDefault();
+        if(promptType === "delete") {
+            console.log(data)
+        } else {
+            console.log(data)
+        }
+
+        setData("")
+        setOpenPrompt(false)
+        setPromptType("")
     }
 
     return (
@@ -141,7 +157,7 @@ function BoardIncomplete() {
                                         size="small"
                                         className={classes.button}
                                         startIcon={<UpdateIcon />}
-                                        onClick={() => onClickUpdateAll(item.tools)}
+                                        onClick={() => handleOpenPrompt(item, "update")}
                                     >
                                         อัพเดตทั้งหมด
                                     </Button>
@@ -152,6 +168,8 @@ function BoardIncomplete() {
                                         size="small"
                                         className={classes.button}
                                         startIcon={<DeleteIcon />}
+                                        onClick={() => handleOpenPrompt(item.id, "delete")}
+
                                     >
                                         Delete
                                     </Button>
@@ -165,32 +183,20 @@ function BoardIncomplete() {
             <div className="figure-box"></div>
             <div className="figure-bar"></div>
 
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={openInput}
-                onClose={handleCloseInput}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={openInput}>
-                    <div className={classes.paper}>
-                        <h2 id="transition-modal-title">{headerPrompt}</h2>
-                        <form onSubmit={handleSubmitInput}>
-                            <Input id="total" element="input" label="จำนวนอุปกรณ์" type="number" errorText="Please fill data" validators={[VALIDATOR_REQUIRE()]} onInput={inputHandler} required />
-                            <div className="TableHistoryTool-action">
-                                <Button type="submit" variant="contained" color="primary" disabled={!formState.isValid}>อัพเดต</Button>
-                                <Button variant="contained" color="secondary" onClick={handleCloseInput}>ยกเลิก</Button>
-                            </div>
-                        </form>
-                    </div>
+            <ModalIncompleteBoard
+                openPrompt={openInput}
+                handleClosePrompt={handleCloseInput}
+                headerPrompt={headerPrompt}
+                handleSubmitPrompt={handleSubmitInput}
+                formState={formState}
+                inputHandler={inputHandler}
+            />
 
-                </Fade>
-            </Modal>
+            <ModalSubmit
+                handleClosePrompt={handleClosePrompt}
+                handleSubmitPrompt={handleSubmitPrompt}
+                openPrompt={openPrompt}
+            />
         </div>
     )
 }

@@ -1,23 +1,20 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { historyBoard } from '../../ApiHistory';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Button, Modal, Backdrop, Fade } from '@material-ui/core';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Button } from '@material-ui/core';
 import { useForm } from "../../shared/hooks/form-hook";
-import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 
 // Component
-import Input from '../../shared/components/FormElements/Input';
-
+import SelectFilterTime from '../../shared/components/UIElements/SelectFilterTime';
+import SelectFilterStatus from '../../shared/components/UIElements/SelectFilterStatus';
+import ModalSubmit from '../../shared/components/UIElements/ModalSubmit';
+import ModalDescription from "./ModalDescription";
+import ModalEdit from './ModalEdit';
 
 // Icon
 import RestoreIcon from '@material-ui/icons/Restore';
 import EditIcon from '@material-ui/icons/Edit';
 import DescriptionIcon from '@material-ui/icons/Description';
-import SelectFilterTime from '../../shared/components/UIElements/SelectFilterTime';
-import SelectFilterStatus from '../../shared/components/UIElements/SelectFilterStatus';
-import DescriptionHistory from '../../shared/components/UIElements/DescriptionHistory';
-
-
 
 const columns = [
     { label: 'วันที่', minWidth: 170 },
@@ -55,17 +52,6 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         maxHeight: 440,
-    },
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
     },
     actionAdd: {
         color: "#28a745",
@@ -219,86 +205,30 @@ export default function TableHistoryBoard() {
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={openRestore}
-                onClose={handleCloseRestore}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={openRestore}>
-                    <div className={classes.paper}>
-                        <h2 id="transition-modal-title">คุณต้องการทำขั้นตอนนี้หรือไม่ ?</h2>
-                        <div className="TableHistoryboard-action">
-                            <Button variant="contained" color="primary" onClick={handleSubmitRestore}>ยืนยัน</Button>
-                            <Button variant="contained" color="secondary" onClick={handleCloseRestore}>ยกเลิก</Button>
-                        </div>
-                    </div>
-                </Fade>
-            </Modal>
 
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={openEdit}
-                onClose={handleCloseEdit}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={openEdit}>
-                    <div className={classes.paper}>
-                        <h2 id="transition-modal-title">ประวัติ</h2>
-                        <form onSubmit={handleSubmitEdit}>
-                            <Input id="total" element="input" label="จำนวนบอร์ด" type="number" errorText="Please fill data" validators={[VALIDATOR_REQUIRE()]} onInput={inputHandler} required />
-                            <div className="TableHistoryTool-action">
-                                <Button type="submit" variant="contained" color="primary" disabled={!formState.isValid}>แก้ไข</Button>
-                                <Button variant="contained" color="secondary" onClick={handleCloseEdit}>ยกเลิก</Button>
-                            </div>
-                        </form>
-                    </div>
+            <ModalSubmit
+                handleClosePrompt={handleCloseRestore}
+                handleSubmitPrompt={handleSubmitRestore}
+                openPrompt={openRestore}
+            />
 
-                </Fade>
-            </Modal>
+            <ModalEdit
+                formState={formState}
+                inputHandler={inputHandler}
+                openPrompt={openEdit}
+                handleClosePrompt={handleCloseEdit}
+                openPrompt={openEdit}
+                handleSubmitPrompt={handleSubmitEdit}
+            />
 
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={openDescription}
-                onClose={handleCloseDescription}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={openDescription}>
-                    <div className={classes.paper}>
-                        <h2 id="transition-modal-title">รายละเอียดเพิ่มเติม</h2>
-                        {data.actionType === "request" && <p className="historyboard-h4">จำนวนอุปกรณ์ที่ใช้ไป</p>}
-                        {data.tools && data.actionType === "request" && data.tools.map((tool) => (
-                            <div className="historyboard-description" key={tool.id}>
-                                <p>{tool.toolName}</p>
-                                <p>{Number(tool.total) * Number(data.total)}</p>
-                            </div>
-                        ))}
-                        <div>
-                            <p className="historyboard-h4">รายละเอียดอื่นๆ</p>
-                            <p>{data.description}</p>
-                        </div>
-                    </div>
-                </Fade>
-            </Modal>
-            <DescriptionHistory />
+            <ModalDescription
+                openPrompt={openDescription}
+                handleClosePrompt={handleCloseDescription}
+                data={data}
+            />
+
         </div>
     );
 }
+
+// 304

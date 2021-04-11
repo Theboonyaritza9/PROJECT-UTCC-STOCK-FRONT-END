@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -18,7 +18,16 @@ const useStyles = makeStyles((theme) => ({
 function SelectCategory(props) {
 
     const classes = useStyles();
-    const { selectValue, setCategoryValue, categoryValue } = props;
+    const { selectValue, setCategoryValue, categoryValue, initialValue } = props;
+
+    useEffect(() => {
+        if(initialValue) {
+            setCategoryValue(initialValue)
+        }
+        return () => {
+            
+        }
+    }, [])
 
     const onChange = (e) => {
         setCategoryValue(e.target.value)

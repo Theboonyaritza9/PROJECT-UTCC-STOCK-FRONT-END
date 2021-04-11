@@ -3,18 +3,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import { historyTool } from '../../ApiHistory';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Button, Modal, Backdrop, Fade } from '@material-ui/core';
 import { useForm } from "../../shared/hooks/form-hook";
-import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
 
 // Component
-import Input from '../../shared/components/FormElements/Input';
+import SelectFilterTime from '../../shared/components/UIElements/SelectFilterTime';
+import SelectFilterStatus from '../../shared/components/UIElements/SelectFilterStatus';
+import ModalSubmit from '../../shared/components/UIElements/ModalSubmit';
+import ModalEdit from './ModalEdit';
+import ModalDescription from './ModalDescription';
 
 // Icon
 import RestoreIcon from '@material-ui/icons/Restore';
 import EditIcon from '@material-ui/icons/Edit';
 import DescriptionIcon from '@material-ui/icons/Description';
-import SelectFilterTime from '../../shared/components/UIElements/SelectFilterTime';
-import SelectFilterStatus from '../../shared/components/UIElements/SelectFilterStatus';
-import DescriptionHistory from '../../shared/components/UIElements/DescriptionHistory';
+
 
 
 const columns = [
@@ -53,17 +54,6 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         maxHeight: 440,
-    },
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
     },
     actionAdd: {
         color: "#28a745",
@@ -146,18 +136,10 @@ export default function TableHistoryTool() {
         setData()
     }
 
-
-    // let lastTime = new Date("3/28/2021")
-
-    // let currentTime = new Date();
-    // const latestTime = currentTime.getTime() / lastTime.getTime()
-    // // console.log(currentTime.getTime() / lastTime.getTime())
-    // console.log(currentTime)
-
     return (
         <div>
-            <SelectFilterTime label="ระยะเวลา"  setData={setTools} defaultValueData={defaultValueTools}  />
-            <SelectFilterStatus label="ชนิดการใช้งานอุปกรณ์"  setData={setTools} defaultValueData={defaultValueTools}  />
+            <SelectFilterTime label="ระยะเวลา" setData={setTools} defaultValueData={defaultValueTools} />
+            <SelectFilterStatus label="ชนิดการใช้งานอุปกรณ์" setData={setTools} defaultValueData={defaultValueTools} />
             <Paper className={classes.root}>
                 <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
@@ -203,7 +185,7 @@ export default function TableHistoryTool() {
                                             {tool.exp}
                                         </TableCell>
                                         <TableCell>
-                                            <div className="TableHistoryTool-action">
+                                            <div className="modal-action-btn-group">
                                                 <Button variant="contained" color="primary" startIcon={<RestoreIcon />} onClick={() => handleOpenRestore(tool.toolName, tool.total)}>คืน</Button>
                                                 <Button variant="contained" color="secondary" startIcon={<EditIcon />} onClick={handleOpenEdit}>แก้ไข</Button>
                                                 <Button variant="contained" color="default" startIcon={<DescriptionIcon />} onClick={() => handleOpenDescription(tool.description)}>เพิ่มเติม</Button>
@@ -225,76 +207,28 @@ export default function TableHistoryTool() {
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={openRestore}
-                onClose={handleCloseRestore}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={openRestore}>
-                    <div className={classes.paper}>
-                        <h2 id="transition-modal-title">คุณต้องการทำขั้นตอนนี้หรือไม่ ?</h2>
-                        <div className="TableHistoryTool-action">
-                            <Button variant="contained" color="primary" onClick={handleSubmitRestore}>ยืนยัน</Button>
-                            <Button variant="contained" color="secondary" onClick={handleCloseRestore}>ยกเลิก</Button>
-                        </div>
-                    </div>
-                </Fade>
-            </Modal>
 
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={openEdit}
-                onClose={handleCloseEdit}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={openEdit}>
-                    <div className={classes.paper}>
-                        <h2 id="transition-modal-title">ประวัติ</h2>
-                        <form onSubmit={handleSubmitEdit}>
-                            <Input id="total" element="input" label="Total" type="number" errorText="Please fill data" validators={[VALIDATOR_REQUIRE()]} onInput={inputHandler} required />
-                            <div className="TableHistoryTool-action">
-                                <Button type="submit" variant="contained" color="primary" disabled={!formState.isValid}>แก้ไข</Button>
-                                <Button variant="contained" color="secondary" onClick={handleCloseEdit}>ยกเลิก</Button>
-                            </div>
-                        </form>
-                    </div>
+            <ModalSubmit
+                handleClosePrompt={handleCloseRestore}
+                handleSubmitPrompt={handleSubmitRestore}
+                openPrompt={openRestore}
+            />
 
-                </Fade>
-            </Modal>
+            <ModalEdit 
+                formState={formState}
+                inputHandler={inputHandler}
+                openPrompt={openEdit}
+                handleClosePrompt={handleCloseEdit}
+                openPrompt={openEdit}
+                handleSubmitPrompt={handleSubmitEdit}
+            />
 
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={openDescription}
-                onClose={handleCloseDescription}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={openDescription}>
-                    <div className={classes.paper}>
-                        <h2 id="transition-modal-title">รายละเอียดเพิ่มเติม</h2>
-                        <p>{data}</p>
-                    </div>
-                </Fade>
-            </Modal>
-            <DescriptionHistory />
+            <ModalDescription 
+                openPrompt={openDescription}
+                handleClosePrompt={handleCloseDescription}
+                data={data}
+            />
+
         </div>
     );
 }

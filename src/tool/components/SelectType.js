@@ -49,6 +49,10 @@ function SelectType(props) {
 
     useEffect(() => {
         onInput(id, value, isValid)
+        if (props.initialValue) {
+            let filterType = selectValue.filter((item) => item.type === props.initialValue);
+            setCategorySelect(filterType[0].category);
+        }
     }, [id, value, isValid, onInput]);
 
     const changeHandler = event => {
