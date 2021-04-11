@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect } from 'react'
 import { TextField } from "@material-ui/core"
 
-import { validate } from '../../util/validators.js'
+import { validate } from '../../shared/util/validators';
 // import './Input.css'
 
 
@@ -65,7 +65,7 @@ const Input = props => {
             // />
             <TextField error={!inputState.isValid && inputState.isTouched}
                 id={props.id}
-                label={<div>{props.label} <span style={{color: "red", fontWeight: "bold"}}>*</span></div>}
+                label={<div>{props.label} <span style={{ color: "red", fontWeight: "bold" }}>*</span></div>}
                 variant="outlined"
                 fullWidth
                 type={props.type}
@@ -73,10 +73,7 @@ const Input = props => {
                 onChange={changeHandler}
                 onBlur={touchHandler}
                 value={inputState.value}
-                style={{margin: "20px 0"}}
-                InputLabelProps={{
-                    shrink: props.shrink,
-                }}
+                style={{ margin: "20px 0" }}
             />
         ) : (
             <textarea
@@ -107,7 +104,7 @@ const Input = props => {
         //     helperText={!inputState.isValid && inputState.isTouched && props.errorText}
         // />
         <React.Fragment>
-            { element }
+            { element}
         </React.Fragment>
     );
 };

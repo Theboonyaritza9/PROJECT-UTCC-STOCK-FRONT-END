@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
-import { Link } from "react-router-dom"
-import { toolItem } from "../../Api"
-import { Avatar, Button } from "@material-ui/core"
+import React, { useState } from 'react';
+import { Link } from "react-router-dom";
+import { toolItem } from "../../Api";
+import { Avatar, Button } from "@material-ui/core";
 
 // Component
 import { SlideImagePreview } from '../../shared/components/UIElements/SlideImagePreview';
+import ModalSubmit from '../../shared/components/UIElements/ModalSubmit';
 
 // Icon
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 // CSS
@@ -19,6 +21,25 @@ function DetailTool() {
     const [tool] = useState(toolItem);
     const [previewImg, setPreviewImg] = useState(tool.imageProfile)
     const [images] = useState(tool.images);
+    const [openPrompt, setOpenPrompt] = useState(false);
+    const [toolId, setToolId] = useState("")
+
+
+    const handleOpenPrompt = () => {
+        setToolId("12346")
+        setOpenPrompt(true)
+    }
+
+    const handleClosePrompt = () => {
+        setOpenPrompt(false)
+        setToolId("")
+    }
+
+    const handleSubmitPrompt = (e) => {
+        e.preventDefault();
+        setOpenPrompt(false)
+        console.log(toolId)
+    }
 
     return (
         <div>
@@ -78,6 +99,7 @@ function DetailTool() {
                         <Link to={`/tool/${tool.id}`}>
                             <Button color="primary" type="button" variant="contained" startIcon={<EditIcon />}>แก้ไข</Button>
                         </Link>
+                        <Button color="secondary" type="button" variant="contained" startIcon={<DeleteIcon />} onClick={handleOpenPrompt}>ลบ</Button>
                         <Link to="/tool/list">
                             <Button type="button" variant="contained" startIcon={<ArrowBackIcon />}>กลับ</Button>
                         </Link>
@@ -85,6 +107,14 @@ function DetailTool() {
                     </div>
                 </div>
             </div>
+
+            <ModalSubmit
+                openPrompt={openPrompt}
+                setOpenPrompt={setOpenPrompt}
+                handleClosePrompt={handleClosePrompt}
+                handleSubmitPrompt={handleSubmitPrompt}
+            />
+
         </div >
     )
 }

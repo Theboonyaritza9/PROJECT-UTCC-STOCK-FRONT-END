@@ -3,12 +3,14 @@ import { Card, CardContent, Avatar, Button } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import { users } from "../../Api";
 
+// Components
+import ModalSubmit from '../../shared/components/UIElements/ModalSubmit';
+
 // Icon
 import DeleteIcon from '@material-ui/icons/Delete';
 
 // CSS
 import "./AuthUser.css"
-import ModalSubmit from '../components/ModalSubmit';
 
 const useStyles = makeStyles((theme) => ({
     image: {
@@ -104,7 +106,12 @@ function AuthUser() {
                 })}
             </div>
 
-            <ModalSubmit openPrompt={openPrompt} setOpenPrompt={setOpenPrompt} handleClosePrompt={handleClosePrompt} handleSubmitPrompt={handleSubmitPrompt} />
+            <ModalSubmit
+                openPrompt={openPrompt}
+                setOpenPrompt={setOpenPrompt}
+                handleClosePrompt={handleClosePrompt}
+                handleSubmitPrompt={handleSubmitPrompt}
+            />
         </div >
     )
 }

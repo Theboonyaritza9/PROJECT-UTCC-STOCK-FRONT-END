@@ -31,6 +31,7 @@ function EditTool() {
     const [files, setFiles] = useState(tool.images);
     const [type] = useState(tool.type);
     const [limit, setLimit] = useState(tool.limit);
+    const [category, setCategory] = useState(tool.category)
     const [description, setDescription] = useState(tool.description);
     const [toolCode, settoolCode] = useState(tool.toolCode);
 
@@ -135,6 +136,15 @@ function EditTool() {
                             initialValid={true}
                             required
                         />
+                        {/* <TextField
+                            label="การแจ้งเตือนอุปกรณ์"
+                            variant="outlined"
+                            type="number"
+                            fullWidth
+                            value={category}
+                            className={classes.margin}
+                            onChange={(e) => setCategory(e.target.value)}
+                        /> */}
                     </div>
                     <Input
                         id="total"

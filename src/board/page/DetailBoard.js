@@ -7,14 +7,16 @@ import { Avatar, Button, Divider, Table, TableBody, TableCell, TableContainer, T
 
 // Component
 import { SlideImagePreview } from '../../shared/components/UIElements/SlideImagePreview';
+import ModalSubmit from '../../shared/components/UIElements/ModalSubmit';
 
 // Icon
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 // CSS
-import "./DetailBoard.css"
+import "./DetailBoard.css";
 
 const columns = [
     { label: 'Image', minWidth: 100 },
@@ -70,6 +72,24 @@ function DetailBoard() {
     const [board] = useState(boardItem);
     const [previewImg, setPreviewImg] = useState(board.imageProfile)
     const [images] = useState(board.images);
+    const [openPrompt, setOpenPrompt] = useState(false);
+    const [boardId, setBoardId] = useState("")
+
+    const handleOpenPrompt = () => {
+        setBoardId("12346")
+        setOpenPrompt(true)
+    }
+
+    const handleClosePrompt = () => {
+        setOpenPrompt(false)
+        setBoardId("")
+    }
+
+    const handleSubmitPrompt = (e) => {
+        e.preventDefault();
+        setOpenPrompt(false)
+        console.log(boardId)
+    }
 
     return (
         <div>
@@ -122,6 +142,7 @@ function DetailBoard() {
                     </div>
                     <div className="detailboard-btn">
                         <Link to={`/board/${board.id}`}><Button color="primary" type="button" variant="contained" startIcon={<EditIcon />}>แก้ไข</Button></Link>
+                        <Button color="secondary" type="button" variant="contained" startIcon={<DeleteIcon />} onClick={handleOpenPrompt}>ลบ</Button>
                         <Link to="/"><Button type="button" variant="contained" startIcon={<ArrowBackIcon />}>กลับ</Button></Link>
                     </div>
                 </div>
@@ -187,6 +208,13 @@ function DetailBoard() {
                     </Table>
                 </TableContainer>
             </Paper>
+
+            <ModalSubmit
+                openPrompt={openPrompt}
+                setOpenPrompt={setOpenPrompt}
+                handleClosePrompt={handleClosePrompt}
+                handleSubmitPrompt={handleSubmitPrompt}
+            />
 
         </div >
     )

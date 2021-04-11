@@ -1,16 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
+// CSS
+import "./ModalSubmit.css";
+
 
 // Component
 import { Button, Modal, Backdrop, Fade } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     paper: {
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
@@ -29,7 +27,7 @@ function ModalSubmit(props) {
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
-            className={classes.modal}
+            className="modal-submit"
             open={openPrompt}
             onClose={handleClosePrompt}
             closeAfterTransition
@@ -41,7 +39,7 @@ function ModalSubmit(props) {
             <Fade in={openPrompt}>
                 <div className={classes.paper}>
                     <h2 id="transition-modal-title">คุณต้องการทำขั้นตอนนี้หรือไม่ ?</h2>
-                    <div className="TableHistoryTool-action">
+                    <div className="modal-submit-btn-group">
                         <Button variant="contained" color="primary" onClick={handleSubmitPrompt}>ยืนยัน</Button>
                         <Button variant="contained" color="secondary" onClick={handleClosePrompt}>ยกเลิก</Button>
                     </div>

@@ -22,8 +22,7 @@ import HistoryProject from "./board/page/HistoryProject";
 import DetailHistoryProject from "./board/page/DetailHistoryProject";
 import EditProject from "./board/page/EditProject";
 import Home from "./Home";
-import Login from "./user/pages/Login";
-import Register from "./user/pages/Register";
+import Auth from "./user/pages/Auth";
 import Profile from "./user/pages/Profile";
 import AuthUser from "./user/pages/AuthUser";
 
@@ -86,11 +85,8 @@ function App() {
             <Route path="/project/:pid">
               <EditProject />
             </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/register">
-              <Register />
+            <Route path="/auth" exact>
+              <Auth />
             </Route>
             <Route path="/profile" exact>
               <Profile />
