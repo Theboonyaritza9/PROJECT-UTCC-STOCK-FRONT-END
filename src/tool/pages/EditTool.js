@@ -19,6 +19,9 @@ import "./EditTool.css";
 
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+        margin: "30px auto"
+    },
     margin: {
         margin: "10px 0"
     }
@@ -33,9 +36,9 @@ function EditTool() {
     const [tool] = useState(toolItem);
     const [file, setFile] = useState(tool.imageProfile);
     const [files, setFiles] = useState(tool.images);
-    const [type] = useState(tool.type);
+    // const [type] = useState(tool.type);
     const [limit, setLimit] = useState(tool.limit);
-    const [category, setCategory] = useState(tool.category)
+    // const [category, setCategory] = useState(tool.category)
     const [description, setDescription] = useState(tool.description);
     const [toolCode, settoolCode] = useState(tool.toolCode);
     const [selectValue] = useState(typeAndcategory_select);
@@ -80,7 +83,7 @@ function EditTool() {
 
 
     return (
-        <Container>
+        <Container className={classes.container}>
             <h1>แก้ไข {tool.toolName}</h1>
             <Paper>
                 <form onSubmit={onSubmit}>

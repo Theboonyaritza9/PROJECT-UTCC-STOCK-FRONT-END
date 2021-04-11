@@ -1,6 +1,6 @@
 export const CheckProject = (
     formState, toolSelected, toolCal,
-    setOpenAlert, setValidTool
+    setOpenAlert, setValidTool, notify
 ) => {
     const useOnSubmitCheck = async () => {
         let projectTotal = formState.inputs.total.value;
@@ -37,6 +37,7 @@ export const CheckProject = (
 
         } else {
             setValidTool(false)
+            notify()
         }
     }
 

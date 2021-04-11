@@ -15,13 +15,18 @@ import ListToolSelected from '../components/ListToolSelected';
 import ImageUploadMultiple from '../../shared/components/FormElements/ImageUploadMultiple';
 import Input from "../../shared/components/FormElements/Input";
 import { Container, Paper, TextField, Button, Divider } from "@material-ui/core";
+import { toast } from "react-toastify";
 
 // CSS
-import "./CreateProject.css"
+import "./CreateProject.css";
+import "react-toastify/dist/ReactToastify.css";
 
-
+toast.configure();
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+        margin: "30px auto"
+    },
     textarea: {
         margin: "20px 0"
     },
@@ -70,6 +75,10 @@ function CreateProject() {
     const [validName, setValidName] = useState(false);
     const [validTotal, setValidTotal] = useState(false);
 
+    const notify = () => {
+        toast.success("อุปกรณ์มีเพียงพอในสต๊อก", { position: toast.POSITION.TOP_RIGHT, autoClose: 3000, className: "notify-success-project" })
+    }
+
     const [formState, inputHandler] = useForm(
         {
             name: {
@@ -94,13 +103,12 @@ function CreateProject() {
 
     const [useOnSubmitCheck] = CheckProject(
         formState, toolSelected, toolCal,
-        setOpenAlert, setValidTool
+        setOpenAlert, setValidTool, notify
     )
 
     const [onSubmit] = useOnSubmitProject(
         formState, projectCode, type, file, description, toolSelected, files, validTool
     );
-
 
     useEffect(() => {
         dispatch(toolListAction());
@@ -130,7 +138,7 @@ function CreateProject() {
     }
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" className={classes.container}>
             <h1>สร้างโปรเจค</h1>
             <Paper className="createproject-form">
                 <form onSubmit={onSubmit}>
@@ -162,7 +170,7 @@ function CreateProject() {
                                 id="total"
                                 element="input"
                                 type="number"
-                                label="จำนวนโปรเจค"
+                                label="จำนวน"
                                 validators={[VALIDATOR_REQUIRE()]}
                                 errorText="โปรดใส่ข้อมูล."
                                 onInput={inputHandler}
@@ -170,7 +178,7 @@ function CreateProject() {
                             />
                         </div>
                         <TextField
-                            label="ชนิดงานของโปรเจค"
+                            label="ชนิดงาน"
                             variant="outlined"
                             fullWidth
                             type="text"

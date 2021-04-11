@@ -16,3 +16,14 @@
     width: 40%;
     text-align: right;
 }
+
+.notify-success {
+    top: 80px;
+}
+
+@media (max-width: 500px) {
+    .notify-success {
+        width: 100%;
+        top: 80px;
+    }
+}

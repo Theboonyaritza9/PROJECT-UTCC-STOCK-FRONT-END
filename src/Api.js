@@ -912,10 +912,10 @@ export const todos = [
 export const boardIncompleteList = [
     {
         id: uuidv4(),
-        boardName: "ET-OPPTO",
-        username: "boonyarit",
+        boardName: "ET-OPTO",
+        username: "Boonyarit",
         userStatus: "Admin",
-        date: "12/12/63",
+        date: "4/7/2021",
         tools: [
             {
                 id: uuidv4(),
@@ -942,9 +942,9 @@ export const boardIncompleteList = [
     {
         id: uuidv4(),
         boardName: "ET-UJC PLUS",
-        username: "Katagi",
+        username: "Boonyarit",
         userStatus: "Admin",
-        date: "11/12/63",
+        date: "4/6/2021",
         tools: [
             {
                 id: uuidv4(),

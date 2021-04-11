@@ -55,14 +55,6 @@ const Input = props => {
 
     const element =
         props.element === 'input' ? (
-            // <input
-            //     id={props.id}
-            //     type={props.type}
-            //     placeholder={props.placeholder}
-            //     onChange={changeHandler}
-            //     onBlur={touchHandler}
-            //     value={inputState.value}
-            // />
             <TextField error={!inputState.isValid && inputState.isTouched}
                 id={props.id}
                 label={<div>{props.label} <span style={{color: "red", fontWeight: "bold"}}>*</span></div>}
@@ -90,22 +82,6 @@ const Input = props => {
         );
 
     return (
-        // <div
-        //     className={`form-control ${!inputState.isValid && inputState.isTouched &&
-        //         'form-control--invalid'}`}
-        // >
-        //     <label htmlFor={props.id}>{props.label}</label>
-        //     {element}
-        //     {!inputState.isValid && inputState.isTouched && <p>{props.errorText}</p>}
-        // </div>
-        // <TextField error={!inputState.isValid && inputState.isTouched}
-        //     id={props.id} 
-        //     label={props.label}
-        //     variant="outlined"
-        //     fullWidth
-        //     type={props.type}
-        //     helperText={!inputState.isValid && inputState.isTouched && props.errorText}
-        // />
         <React.Fragment>
             { element }
         </React.Fragment>

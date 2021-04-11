@@ -23,6 +23,7 @@ function SelectCategory(props) {
     useEffect(() => {
         if(initialValue) {
             setCategoryValue(initialValue)
+            console.log("work")
         }
         return () => {
             

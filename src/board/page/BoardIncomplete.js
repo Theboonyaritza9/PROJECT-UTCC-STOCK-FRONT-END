@@ -106,7 +106,7 @@ function BoardIncomplete() {
                         <div className="cover-incomplete" key={item.id}>
                             <div className="header-incomplete">
                                 <div className="proflie-img-incomplete">
-                                    <img src="/images/profile.png" alt="555" />
+                                    <img src="https://i.pinimg.com/564x/95/c8/d2/95c8d2413663f98c43fbd51aa3791bdb.jpg" alt="555" />
                                 </div>
                                 <div>
                                     <p>{item.username} ({item.userStatus})</p>

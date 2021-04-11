@@ -6,7 +6,8 @@ import { TextField, MenuItem } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     marginFilter: {
-        marginRight: "10px"
+        margin: "10px 10px 10px 0",
+        width: "150px"
     }
 }));
 
@@ -157,7 +158,6 @@ function SelectFilter(props) {
             label={label}
             value={value}
             onChange={onChange}
-            helperText="Please select your currency"
             className={classes.marginFilter}
         >
             {typeList.map((option, index) => (

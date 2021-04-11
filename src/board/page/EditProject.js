@@ -14,14 +14,20 @@ import Input from "../../shared/components/FormElements/Input";
 import ListToolSelected from "../components/ListToolSelected";
 import SelectComponent from "../../shared/components/FormElements/Select";
 import ImageUpload from '../../shared/components/FormElements/ImageUpload';
-import { Container, Paper, TextField, Button, Divider } from "@material-ui/core";
+import { Container, Paper, TextField, Button } from "@material-ui/core";
 import ImageUploadMultiple from '../../shared/components/FormElements/ImageUploadMultiple';
+import { toast } from "react-toastify";
 
 // CSS
-import "./EditProject.css"
+import "./EditProject.css";
+import "react-toastify/dist/ReactToastify.css";
 
+toast.configure();
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+        margin: "30px auto"
+    },
     margin: {
         margin: "20px 0"
     },
@@ -30,9 +36,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "#FFC107"
     },
 }));
-
-
-
 
 function EditProject() {
 
@@ -61,7 +64,13 @@ function EditProject() {
     const [validBtn, setValidBtn] = useState(false);
     const [validName, setValidName] = useState(false);
     const [validTotal, setValidTotal] = useState(false);
-    const [toolCal] = useState(toolList.tools);
+    const [toolCal, setToolcal] = useState([]);
+
+    console.log(toolCal)
+
+    const notify = () => {
+        toast.success("อุปกรณ์มีเพียงพอในสต๊อก", { position: toast.POSITION.TOP_RIGHT, autoClose: 3000, className: "notify-success-project" })
+    }
 
     const [formState, inputHandler] = useForm(
         {
@@ -78,7 +87,7 @@ function EditProject() {
     );
 
     const [useTypeFilter, useCategoryFilter, useNameFilter, useOnSubmitToolSelected, useDeleteToolSelected] = useFilter(
-        tools, toolBackup,typeFilter, categoryFilter, nameFilter,
+        tools, toolBackup, typeFilter, categoryFilter, nameFilter,
         setTools, setToolBackup, setTypeFilter, setCategoryFilter, setNameFilter,
         setTypeSelect, setCategorySelect, setNameSelect,
         totalSelect, toolSelected, validTotal,
@@ -87,7 +96,7 @@ function EditProject() {
 
     const [useOnSubmitCheck] = CheckProject(
         formState, toolSelected, toolCal,
-        setOpenAlert, setValidTool
+        setOpenAlert, setValidTool, notify
     )
 
     const [onSubmit] = useOnSubmitProject(
@@ -100,16 +109,18 @@ function EditProject() {
         // กำหนดค่าอาเรย์ของอุปกรณ์ โดยนำข้อมูล อุปกรณ์ที่ใช้ในบอร์ด(project.tools) มาลบกับ อุปกรณ์(toolList.tool) 
         let temArr = []
         for (var count = 0; count < project.tools.length; count++) {
-            if(temArr.length === 0){
+            if (temArr.length === 0) {
                 temArr = toolList.tools.filter((item) => project.tools[count].id !== item.id)
-            } 
-            if(temArr.length > 0) {
+            }
+            if (temArr.length > 0) {
                 let filterData = temArr.filter((item) => project.tools[count].id !== item.id)
                 temArr = filterData
             }
         }
 
         setTools(temArr)
+        setToolcal(toolList.tools)
+        
         return () => {
 
         }
@@ -131,7 +142,7 @@ function EditProject() {
     }
 
     return (
-        <Container>
+        <Container className={classes.container}>
             <h1>แก้ไข {project.projectName}</h1>
             <Paper>
                 <form onSubmit={onSubmit}>
@@ -204,7 +215,6 @@ function EditProject() {
                         >
                             เพิ่ม
                         </Button>
-                        <Divider />
                         <h4>อุปกรณ์ที่ใช้ในบอร์ด</h4>
                         <ListToolSelected toolSelected={toolSelected} deleteTool={useDeleteToolSelected} />
                     </div>

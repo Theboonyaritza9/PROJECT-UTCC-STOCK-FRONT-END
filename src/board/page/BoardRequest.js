@@ -11,9 +11,13 @@ import { listToolApi } from "../../Api"
 import Input from "../../shared/components/FormElements/Input";
 import SelectValidation from '../../shared/components/FormElements/SelectValidation';
 import { Container, Paper, Button } from "@material-ui/core";
+import { toast } from "react-toastify";
 
 // CSS
-import "./BoardRequest.css"
+import "./BoardRequest.css";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure()
 
 const useStyles = makeStyles((theme) => ({
     textarea: {
@@ -50,6 +54,10 @@ function BoardRequest() {
     const [validTool, setValidTool] = useState(false);
     const [validBoard, setvalidBoard] = useState(false);
     const [boardToltal, setBoardToltal] = useState({});
+
+    const notify = () => {
+        toast.success("อุปกรณ์มีเพียงพอในสต๊อก", { position: toast.POSITION.TOP_RIGHT, autoClose: 3000, className: "notify-success" })
+    }
 
     const [formState, inputHandler] = useForm(
         {
@@ -130,6 +138,7 @@ function BoardRequest() {
 
         } else {
             setValidTool(false)
+            notify()
         }
     }
 
